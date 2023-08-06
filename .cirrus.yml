@@ -1,0 +1,18 @@
+env:
+  CIRRUS_CLONE_DEPTH: 1
+  BUILD_HOSTNAME: codespace
+  BUILD_USERNAME: venom
+  TZ: Asia/Kolkata
+  GH_TOKEN: ENCRYPTED[4cb5aa8770cd295a8cbedd1dee682f0d63ac08be12616acd8580fc7920a03bf4572b741390734406b79ef2c26d78d654]
+  GL_TOKEN: ENCRYPTED[3522a0bd849f6aba8a2d92901478e6b49648f3563d49bc6ead8a77576822504c246553e956332fc19048771454cf57cc]
+
+task:
+  name: Cirrus CI Builder
+  container:
+    image: apon77/aosp:cirrus
+    cpu: 8
+    memory: 32G
+  timeout_in: 120m
+  setup_script: set env && sudo apt update && sudo apt upgrade -y && sudo DEBIAN_FRONTEND=noninteractive apt install tzdata -y && git config --global user.name "GhostMaster69-dev" && git config --global user.email "rathore6375@gmail.com" && echo "$GL_TOKEN" > ~/.git-credentials && echo "$GH_TOKEN" >> ~/.git-credentials && git config --global credential.helper "store --file ~/.git-credentials"
+  sync_script: bash sync.sh
+  build_script: bash build_rom.sh
